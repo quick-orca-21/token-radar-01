@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Launchwatch — Token Launch Radar</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="brand">
+    <div class="wordmark"><span class="blip"></span>LAUNCHWATCH</div>
+    <p class="tagline">A radar for token launches that have not happened yet. Every protocol that records
+    no token, ranked by what its launch would be worth if its record stayed as it is — and what to do
+    on each one before it issues.</p>
+  </div>
+  <div class="stamp">
+    <div class="stamp-row"><span>Snapshot</span><strong id="as-of">—</strong></div>
+    <div class="stamp-row"><span>Source</span><strong id="source">—</strong></div>
+    <div class="stamp-row"><span>Watchlist floor</span><strong id="floor">—</strong></div>
+  </div>
+</header>
+
+<section class="method" aria-label="How this radar works">
+  <div class="counts" id="counts"></div>
+  <p class="method-note">
+    <strong>How a value is derived.</strong> Implied value = TVL × category multiple × momentum × age.
+    The multiple is the median market-cap/TVL of the tokenised protocols in the same category — the
+    protocols that already trade are the comps, and they are never ranked — blended toward the
+    all-market median in log space, so a category with one wild peer borrows the market's figure.
+    Momentum marks a protocol up or down by its seven-day TVL change; age marks it up the longer it
+    has run with no token. Protocols that are a wrapped, staked or bridged product of a token that
+    already trades are excluded, as are versioned releases and exchange house products.
+  </p>
+  <details class="multiples">
+    <summary>Category multiples used on this board</summary>
+    <div class="mult-grid" id="multiples"></div>
+  </details>
+</section>
+
+<section class="controls" aria-label="Board controls">
+  <label class="ctl grow">Search
+    <input type="search" id="q" placeholder="Protocol name or slug">
+  </label>
+  <label class="ctl">Category
+    <select id="cat"><option value="">All categories</option></select>
+  </label>
+  <label class="ctl">Chain
+    <select id="chain"><option value="">All chains</option></select>
+  </label>
+  <label class="ctl check">
+    <input type="checkbox" id="wl"> Watchlist only
+  </label>
+  <span class="showing" id="showing"></span>
+</section>
+
+<main>
+  <table class="board" id="board">
+    <thead>
+      <tr>
+        <th data-sort="rank" class="num">Rank</th>
+        <th data-sort="name">Protocol</th>
+        <th>Category</th>
+        <th>Chains</th>
+        <th data-sort="tvl" class="num">TVL</th>
+        <th data-sort="chg" class="num">7d %</th>
+        <th data-sort="months" class="num">Months tokenless</th>
+        <th data-sort="mult" class="num">Multiple</th>
+        <th data-sort="iv" class="num">Implied value</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="empty" id="empty" hidden>No protocol matches those filters. Loosen one and the radar sweeps again.</p>
+</main>
+
+<aside class="detail" id="detail" hidden aria-label="Protocol detail">
+  <button class="close" id="close" aria-label="Close detail">×</button>
+  <div id="detail-body"></div>
+</aside>
+<div class="scrim" id="scrim" hidden></div>
+
+<footer class="foot">
+  <p>Implied values are this radar's own model output, stated so a reader can check every input on the
+  detail view; they are not a prediction that a token will be issued. Farm plans are written per protocol
+  from its category, chains, TVL tier and age — costs are estimates in USD at the snapshot date.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
